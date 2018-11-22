@@ -1,0 +1,9 @@
+vgcore*
+*.out
+*.swp
+*.o
+makefile
+Makefile
+*.dat
+*.zip
+*.vim
