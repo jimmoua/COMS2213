@@ -1,0 +1,8 @@
+Infix:   A+B;
+Postfix: AB+
+Infix:   A+C;
+Postfix: AC+
+Infix:   A*B;
+Postfix: AB*
+Infix:   A+B(C/D).
+Postfix: ABCD/+
