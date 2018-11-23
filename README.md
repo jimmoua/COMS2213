@@ -24,6 +24,9 @@ This is the same as the second assignment using the exact same design. However, 
 ##### Assignment 04 (Infix to Postfix)
 This assignment works with implementation of a stack and queue. The stack and queue that we will be implementing is based off the STL stack and queue. Stack will look very similar to the second assignment and queue will look very similar to the third assignment.
 
+##### Assignment 05 (Binary Search Tree)
+This assignment is like linked list, but as an array. We are to implement a binary search tree on a scattered (as in memory) list.
+
 ## Homeworks
 The homeworks for this course is designing and implementing four different sort algorithms and are listed below from least difficult to most difficult.
 + Bubble Sort
