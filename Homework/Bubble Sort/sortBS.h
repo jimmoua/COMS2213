@@ -1,3 +1,5 @@
+#ifndef SORT_BUBBLE_SORT_H
+#define SORT_BUBBLE_SORT_H
 #include "UList.h"
 
 template<class T>
@@ -8,3 +10,5 @@ void sort(UList<T>& list)
       if(list.items[j] > list.items[j+1])
         std::swap(list.items[j], list.items[j+1]);
 }
+
+#endif
