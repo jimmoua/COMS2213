@@ -15,9 +15,9 @@ class UList
     size_t size() const;
     bool empty() const;
     template<class U>
-        friend std::ostream& operator<<(std::ostream&, const UList<U>&);
+      friend std::ostream& operator<<(std::ostream&, const UList<U>&);
     template<class U>
-        void friend sort(UList<U>&);
+      void friend sort(UList<U>&);
   protected:
     std::vector<T> items;
 };
@@ -58,7 +58,6 @@ bool UList<T>::find(const T& itemToFind) const
   {
     if(*iter == itemToFind)
     {
-      items.erase(iter);
       itemFound = true;
       break;
     }
@@ -87,5 +86,8 @@ std::ostream& operator<<(std::ostream& os, const UList<T>& obj)
     os << "Empty.";
   return os;
 }
+
+template<class T>
+bool UList<T>::empty() const { return items.empty(); }
 
 #endif
