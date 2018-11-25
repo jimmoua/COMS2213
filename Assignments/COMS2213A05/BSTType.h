@@ -218,6 +218,62 @@ bool BSTType<T>::find(const T& item, BTNodeType<T>* obj) const
 template<class T> // public
 void BSTType<T>::insert(const T& item)
 {
+  /* Here, an item needs to be inserted. When the insert function is
+   * first invoked, it will check to see if the root node is nullptr.
+   * If the root node is nullptr, dynamically allocate memory for it
+   * and then set the root->item to the item that is going to be
+   * inserted into the tree.
+   *
+   * If the list, however, is not empty, then traverse the tree
+   * similar to the find function, and then insert where necessary */
+  if(root == nullptr)
+  {
+    root = new BTNodeType<T>;
+    root->item = item;
+    count++;
+  }
+  else if(item < root->item)
+  {
+    insert(item, root->left);
+  }
+  else if(item > root->item)
+    insert(item, root->right);
+  else
+  {
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Function:
+ *   void BSTType<T>::insert(const T&, BTNodeType<T>*&)
+ *
+ * Description:
+ *
+ * Preconditions:
+ *
+ * Postconditions:
+ * ----------------------------------------------------------------*/
+template<class T> // private
+void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
+{
+  if(obj == nullptr)
+  {
+    // If the obj is a null
+    obj = new BTNodeType<T>;
+    obj->item = item;
+  }
+  else if(item < obj->item)
+  {
+    // Insert left
+  }
+  else if(item > obj->item)
+  {
+    // insert right
+  }
+  else if(item == obj->item)
+  {
+    // Create an iterator and insert
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -292,21 +348,6 @@ void BSTType<T>::erase(const T& item, BTNodeType<T>*& obj)
  * ----------------------------------------------------------------*/
 template<class T> // private
 void BSTType<T>::inorder(std::ostream&, BTNodeType<T>*) const
-{
-}
-
-/* ------------------------------------------------------------------
- * Function:
- *   void BSTType<T>::insert(const T&, BTNodeType<T>*&)
- *
- * Description:
- *
- * Preconditions:
- *
- * Postconditions:
- * ----------------------------------------------------------------*/
-template<class T> // private
-void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
 {
 }
 
