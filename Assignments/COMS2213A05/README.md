@@ -50,3 +50,6 @@ In short, we will be needing
 
 ### Root Node
 Notice how in the above UML diagram, we have two `protected` members: `BTNodeType<T>* root` and `size_t count`. Most of the class functions will have to deal with `root` pointer This is very important because `root` is used to traverse our tree.
+
+### Recursion
+Recursion is basically when a function invokes itself. This program will be dealing heavily with recurrsion for the any functions that traverses the tree.
