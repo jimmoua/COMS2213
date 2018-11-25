@@ -17,7 +17,7 @@ BTNodeType<T> *right;
 
 **BSTType**
 
-This is a templated class.
+This is a templated `class`.
 ```c++
 #*root:BTNodeType<T>
 #count:size_t
