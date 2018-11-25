@@ -6,8 +6,8 @@ template<class T>
 struct BTNodeType
 {
   T item;
-  BTNodeType<T>* left;
-  BTNodeType<T>* right;
+  BTNodeType<T>* left = nullptr;
+  BTNodeType<T>* right = nullptr;
 };
 
 #endif
