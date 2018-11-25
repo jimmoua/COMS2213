@@ -43,17 +43,20 @@ class BSTType
  *   The default constructor of the class.
  *
  * Preconditions:
- *   An object of the BSTType class as instantiated
- * without any passing on any parameters to imply that there exists a
- * user-defined constructor.
+ *   An object of the BSTType class is instantiated without any
+ *   parameters.
  *
  * Postconditions:
+ *   Sets the root node and its left and rode node to nullptr. Also
+ *   sets the count of the tree to 0.
  * ----------------------------------------------------------------*/
-template<class T> // public
+template<class T>
 BSTType<T>::BSTType()
 {
   count = 0;
   root = nullptr;
+  root->left = nullptr;
+  root->right = nullptr;
 }
 
 /* ------------------------------------------------------------------
@@ -61,12 +64,13 @@ BSTType<T>::BSTType()
  *   BSTType<T>::BSTType(const BSTType<T>&)
  *
  * Description:
+ *   The copy constructor. Performs deep copy.
  *
  * Preconditions:
  *
  * Postconditions:
  * ----------------------------------------------------------------*/
-template<class T> // public
+template<class T>
 BSTType<T>::BSTType(const BSTType<T>& src)
 {
   // copy ctor
@@ -77,6 +81,7 @@ BSTType<T>::BSTType(const BSTType<T>& src)
  *   const BSTType<T>& BSTType<T>::operator=(const BSTType<T>&)
  *
  * Description:
+ *   The assignment operator overload. Performs deep copy.
  *
  * Preconditions:
  *
@@ -93,6 +98,8 @@ const BSTType<T>& BSTType<T>::operator=(const BSTType<T>& src)
  *   BSTType<T>::~BSTType()
  *
  * Description:
+ *   Destructor of the class. Traverses the tree and deallocates
+ *   everything that was dynamically allocated.
  *
  * Preconditions:
  *
@@ -121,9 +128,10 @@ bool BSTType<T>::empty() const { return (this->count == 0); }
 
 /* ------------------------------------------------------------------
  * Function:
- *   BSTType<T>::empty() const
+ *   BSTType<T>::erase(const T&)
  *
  * Description:
+ *   This function will remove an item from the tree.
  *
  * Preconditions:
  *
@@ -147,6 +155,54 @@ void BSTType<T>::erase(const T& item)
 template<class T> // public
 bool BSTType<T>::find(const T& item) const
 {
+  /* Since the tree is ordered from values low → high, we are going
+   * to compare the item of the left/right node to the item that is
+   * to be searched for. If the item is greater than the left node,
+   * we should obviously search by traversing the right branches, but
+   * if the value is less than or equal to the left node, then we
+   * should traverse the left branches. However, we need to check
+   * what item the root node holds. If the item matches the item that
+   * the root node holds, then we don't need to do any traversal. We
+   * simply return that it has been found */
+  if(empty())
+    return false;
+  else
+  {
+    if(root->item == item)
+      return true;
+    else if(root->left != nullptr && root->item <= root->left->item)
+      find(item, root->left);
+    else if(root->right != nullptr)
+        find(item, root->right);
+    else
+      return false;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Function:
+ *   bool BSTType<T>::find(const T&, BTNodeType<T>*) const
+ *
+ * Description:
+ *   Find function that is used for recurrsion.
+ *
+ * Preconditions:
+ *   The find(const T&) is invoked.
+ *
+ * Postconditions:
+ *   Does not modify anything.
+ * ----------------------------------------------------------------*/
+template<class T>
+bool BSTType<T>::find(const T& item, BTNodeType<T>* obj) const
+{
+  if(obj->item == item)
+    return true;
+  else if(obj->left != nullptr && obj->item <= obj->left->item)
+    find(item, obj->left);
+  else if (obj->right != nullptr)
+    find(item, obj->right);
+  else
+    return false;
 }
 
 /* ------------------------------------------------------------------
@@ -221,21 +277,6 @@ void BSTType<T>::destroy(BTNodeType<T>*& obj)
  * ----------------------------------------------------------------*/
 template<class T> // private
 void BSTType<T>::erase(const T& item, BTNodeType<T>*& obj)
-{
-}
-
-/* ------------------------------------------------------------------
- * Function:
- *   bool BSTType<T>::find(const T&, BTNodeType<T>*) const
- *
- * Description:
- *
- * Preconditions:
- *
- * Postconditions:
- * ----------------------------------------------------------------*/
-template<class T> // private
-bool BSTType<T>::find(const T& item, BTNodeType<T>* obj) const
 {
 }
 
