@@ -165,15 +165,23 @@ bool BSTType<T>::find(const T& item) const
    * the root node holds, then we don't need to do any traversal. We
    * simply return that it has been found */
   if(empty())
+  {
+    /* If the tree is empty, there isn't really anything to search for.
+     * In this, the function will return false */
     return false;
+  }
   else
   {
+    /* If there is something to search for, the code inside this else
+     * scope is executed, and recurrsion is used to find the value */
     if(root->item == item)
       return true;
-    else if(root->left != nullptr && root->item <= root->left->item)
+    else if(root->left != nullptr && item < root->left->item)
+      // Left traversal
       find(item, root->left);
     else if(root->right != nullptr)
-        find(item, root->right);
+      // Right traversal
+      find(item, root->right);
     else
       return false;
   }
@@ -184,10 +192,11 @@ bool BSTType<T>::find(const T& item) const
  *   bool BSTType<T>::find(const T&, BTNodeType<T>*) const
  *
  * Description:
- *   Find function that is used for recurrsion.
+ *   Find function that is used to find the item via recurrsion.
  *
  * Preconditions:
- *   The find(const T&) is invoked.
+ *   The find(const T&) is invoked somewhere in the program. This
+ *   causes the reccursive function to be called.
  *
  * Postconditions:
  *   Does not modify anything.
@@ -197,11 +206,20 @@ bool BSTType<T>::find(const T& item, BTNodeType<T>* obj) const
 {
   if(obj->item == item)
     return true;
-  else if(obj->left != nullptr && obj->item <= obj->left->item)
+  else if(obj->left != nullptr && item < obj->left->item)
+    /* If the left isn't a nullptr and the item that we are trying
+     * to find less than the left item */
     find(item, obj->left);
   else if (obj->right != nullptr)
+    /* If the left isn't what we're looking for, we are going to
+     * check the right to see if it's nullptr. If it isn't, we will
+     * traverse the right branches instead. */
     find(item, obj->right);
   else
+    /* If none of the above is true, that means we are on a node that
+     * is nullptr, indicating the end of traveresal. Since there is
+     * no longer anything for us to traverse, we will simply return
+     * false to denote that the item was not found. */
     return false;
 }
 
