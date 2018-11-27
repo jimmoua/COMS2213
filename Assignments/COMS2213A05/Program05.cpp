@@ -3,6 +3,7 @@
 
 int main()
 {
-
+  BSTType<int> asdf;
+  jimboDebug(asdf);
   return EXIT_SUCCESS;
 }

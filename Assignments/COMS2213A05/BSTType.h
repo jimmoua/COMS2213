@@ -3,6 +3,7 @@
 #include "BTNodeType.h"
 #include <cstddef>
 #include <ostream>
+#include <iostream>
 
 enum TravType { PRE, POST, IN };
 
@@ -20,6 +21,10 @@ class BSTType
     void insert(const T&);
     size_t size() const;
     void traverse(std::ostream&, TravType) const;
+
+    /* Debug function */
+    template<class U>
+      void friend jimboDebug(BSTType<U>&);
   protected:
     BTNodeType<T>* root;
     size_t count;
@@ -51,13 +56,7 @@ class BSTType
  *   sets the count of the tree to 0.
  * ----------------------------------------------------------------*/
 template<class T>
-BSTType<T>::BSTType()
-{
-  count = 0;
-  root = nullptr;
-  root->left = nullptr;
-  root->right = nullptr;
-}
+BSTType<T>::BSTType() { count = 0; }
 
 /* ------------------------------------------------------------------
  * Function:
@@ -228,6 +227,8 @@ bool BSTType<T>::find(const T& item, BTNodeType<T>* obj) const
  *   BSTType<T>::insert(const T&)
  *
  * Description:
+ *   The non-recursive function of insert. This insert function will
+ *   invoke the recursive function of insert.
  *
  * Preconditions:
  *
@@ -242,22 +243,48 @@ void BSTType<T>::insert(const T& item)
    * and then set the root->item to the item that is going to be
    * inserted into the tree.
    *
-   * If the list, however, is not empty, then traverse the tree
-   * similar to the find function, and then insert where necessary */
+   * If the list, however, is not empty, then 
+   * similar to the find function, and then insert where necessary
+   *
+   * It's going to look something like this: Say we want to insert
+   * a value of 10 into list, and assume the list is list.
+   *
+   * Item to insert: 10
+   * let NP = nullptr
+   *
+   *         [NP] ← This means we are going to insert it here
+   *        /    \
+   *      [NP]  [NP]
+   *  
+   * Tree after insertion...
+   *         [10]
+   *        /    \
+   *      [NP]  [NP]
+   *
+   * The left and right still are nullptr. If we wish to insert
+   * more, that means there will be more traversal, and we have to
+   * rely on recursion to determine where the item should now be
+   * inserted
+   * */
+
   if(root == nullptr)
   {
+    std::cout << "Item " << item << " inserted at root\n";
     root = new BTNodeType<T>;
     root->item = item;
     count++;
   }
-  else if(item < root->item)
+  else if(item <= root->item)
   {
+    std::cout << "Inserting: " << item << std::endl << "  " << item
+      << " is leq to " << item << ". " << "Descending left...\n";
     insert(item, root->left);
   }
-  else if(item > root->item)
-    insert(item, root->right);
-  else
+  else if(item >= root->item)
   {
+    std::cout << "Inserting: " << item << std::endl << "  " << item
+      << " is geq to " << item << ". " << "Descending right...\n";
+    insert(item, root->right);
   }
 }
 
@@ -266,6 +293,7 @@ void BSTType<T>::insert(const T& item)
  *   void BSTType<T>::insert(const T&, BTNodeType<T>*&)
  *
  * Description:
+ *   The recursive insert function.
  *
  * Preconditions:
  *
@@ -274,23 +302,134 @@ void BSTType<T>::insert(const T& item)
 template<class T> // private
 void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
 {
+  /* If we have an item to insert, and we already have the given list
+   * and another value of 10, this means:
+   *
+   * Value to insert: 10
+   *
+   *         [10]    This is the current tree.
+   *        /    \
+   *      [NP]  [NP]
+   *
+   * If we want to insert a value of 10, we will have to create
+   * an an iterator and then insert the iterator into the tree.
+   * Since 10 is just a duplicate value, we will simply say that
+   * it is the parent and then move the test of the tree down by
+   * repointing things.
+   *
+   * Here, prepare the iterator for insertion.
+   * -----------------------------------------
+   *   [10]
+   *         [10] ← Current root (or parent)
+   *        /    \
+   *      [NP]  [NP]
+   *
+   *
+   * Then we can reroute some pointers
+   * ---------------------------------
+   *            [10] 
+   *           /    \
+   *         [NP]  [10] ← Inserted here (for duplicate values insert right)
+   *               /  \
+   *             [NP][NP]
+   *
+   * However, if we had a heavily populated list already, things would
+   * still be quite similar.
+   *
+   *   Value to insert: 28
+   *
+   *               [11]
+   *               /  \
+   *              /    \
+   *             /      \
+   *            /        \
+   *         [06]       [19]
+   *         /  \       /  \
+   *        /    \     /    \
+   *      [04]  [08] [17]  [43]
+   *        \      \       /  \
+   *       [05]   [10]   [31][49]
+   *
+   *   This means that the value 28 needs to be inserted to the left of
+   *   31. With some repoint the pointers. When traversing for insert,
+   *   we will eventally get to the point where we are at the node that
+   *   holds item 31. Once there, insert 28 to the left of 31 since 28
+   *   is less than 31.
+   *   
+   *   CODE EXAMPLE FOR THIS
+   *   ---------------------
+   *     if(item == obj->item)
+   *       // Do what was described above
+   *     else if(item > obj->item)
+   *       insert(item, obj->right;
+   *     else if(item < obj->item)
+   *       insert(item, obj->left);
+   *     else
+   *       // The only option left is nullptr, so allocate memory for it
+   *    
+   *
+   *                                    
+   *            [11]                             [11]                            
+   *            /  \                             /  \
+   *           /    \                           /    \
+   *          /      \                         /      \
+   *         /        \                       /        \
+   *      [06]       [19]                  [06]       [19]
+   *      /  \       /  \                  /  \       /  \
+   *     /    \     /    \                /    \     /    \
+   *   [04]  [08] [17]  [43]            [04]  [08] [17]  [43]  
+   *     \      \       /  \              \      \       /  \
+   *    [05]   [10]   [31][49]           [05]   [10]   [31][49]
+   *                  /                                /
+   *                [NP]       Value inserted here → [28]
+   *                 ↑        ----------------------------
+   *                 It gets here eventually, and when it does, we will
+   *                 allocate memory for it.
+   *
+   *
+   * What if we had a duplicate item needed to be inserted, but it isn't
+   * the root node this time?
+   *
+   *    Item to insert: 43
+   *
+   *
+   *            [11]                             [11]                            
+   *            /  \                             /  \
+   *           /    \                           /    \
+   *          /      \                         /      \
+   *         /        \                       /        \
+   *      [06]       [19]                  [06]       [19]
+   *      /  \       /  \                  /  \       /  \
+   *     /    \     /    \                /    \     /    \
+   *   [04]  [08] [17]  [43]            [04]  [08] [17]  [43] ←
+   *     \      \       /  \              \      \       /  \
+   *    [05]   [10]   [31][49]           [05]   [10]   [31][49]
+   *
+   * */
   if(obj == nullptr)
   {
-    // If the obj is a null
+    std::cout << "Null pointer reached. Allocating memory for item "
+      << item << std::endl;
+    // Create an iterator
     obj = new BTNodeType<T>;
+
+    // Iterator item is set to value of item to inserted.
     obj->item = item;
+
+    count++;
   }
-  else if(item < obj->item)
+  else if(item <= obj->item)
   {
-    // Insert left
+    std::cout << "Inserting: " << item << std::endl << "  " << item
+      << " is leq to " << obj->item << ". " << "Descending left...\n";
+    insert(item, obj->left);
   }
-  else if(item > obj->item)
+  else if(item >= obj->item)
   {
     // insert right
-  }
-  else if(item == obj->item)
-  {
-    // Create an iterator and insert
+    std::cout << "Inserting: " << item << std::endl << "  " << item
+      << " is geq to " << obj->item << ". " << "Descending right...\n";
+    insert(item, obj->right);
   }
 }
 
@@ -299,6 +438,9 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
  *   size_t BSTType<T>::size() const
  *
  * Description:
+ *   This is the infamous one-liner function, if you exclude the
+ *   template. Anyways, it just returns the current count of the list
+ *   which denotes how many items there are in the list.
  *
  * Preconditions:
  *
@@ -414,4 +556,70 @@ void BSTType<T>::preorder(std::ostream& os, BTNodeType<T>* obj) const
 {
 }
 
+/* ------------------------------------------------------------------
+ * Function:
+ *  void jimboDebug()
+ *
+ * Description:
+ *  This is an extremely powerful function because it's a function
+ *  for debugging.
+ *
+ * Preconditions: None
+ *
+ * Postconditions: Whatever it wants.
+ * ----------------------------------------------------------------*/
+template<class T>
+void jimboDebug(BSTType<T>& obj)
+{
+  obj.insert(10);
+  obj.insert(20);
+  obj.insert(30);
+  obj.insert(40);
+  obj.insert(10);
+  obj.insert(20);
+  obj.insert(30);
+  obj.insert(40);
+  obj.insert(50);
+  obj.insert(60);
+  obj.insert(70);
+  obj.insert(80);
+  obj.insert(90);
+  obj.insert(100);
+  obj.insert(50);
+  obj.insert(60);
+  obj.insert(70);
+  obj.insert(80);
+  obj.insert(90);
+  obj.insert(100);
+  obj.insert(10);
+  obj.insert(20);
+  obj.insert(30);
+  obj.insert(40);
+  obj.insert(50);
+  obj.insert(60);
+  obj.insert(70);
+  obj.insert(80);
+  obj.insert(90);
+  obj.insert(100);
+  obj.insert(10);
+  obj.insert(20);
+  obj.insert(30);
+  obj.insert(40);
+  obj.insert(50);
+  obj.insert(60);
+  obj.insert(70);
+  obj.insert(80);
+  obj.insert(90);
+  obj.insert(100);
+  obj.insert(10);
+  obj.insert(20);
+  obj.insert(30);
+  obj.insert(40);
+  obj.insert(50);
+  obj.insert(60);
+  obj.insert(70);
+  obj.insert(80);
+  obj.insert(90);
+  obj.insert(100);
+}
 #endif
