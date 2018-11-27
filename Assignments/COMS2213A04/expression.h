@@ -1,7 +1,6 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
-#include <cstddef>
 #include <iostream>
 #include <string>
 #include "stack.h"
@@ -17,8 +16,8 @@ class expression
     void convertToPostfix();
     bool precedence(char, char) const;
 
-    std::string ifix; // Normal string
-    std::string pfix; // Parse ifix string → into pfix
+    std::string ifix;
+    std::string pfix;
 };
 
 #endif

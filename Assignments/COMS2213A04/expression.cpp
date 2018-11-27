@@ -23,7 +23,8 @@ expression::expression()
  *   on an object of the expression class and when the stream has read all the contents
  *   of a file (denoted with a '.').
  *
- * Postconditions:
+ * Postconditions: Sets the infix strings and places the converted infix string values
+ *   into the postfix string.
  *
  * *************************************************************************************/
 void expression::convertToPostfix()
@@ -94,13 +95,21 @@ bool expression::precedence(char s, char c) const
   return (c == '+' || c == '-');
 }
 
-/* Function:                          ***************************************************
+/* Function: std::istream& operator>>(std::istream&, expression& ) **********************
  *
- * Description:
+ * Description: This is the insertion operator overload function. It is invoked with we
+ *   have the an object of the expression class to the right hand side of the operator.
+ *   It will keep reading from a file that contains the infix expression until the end
+ *   of the expression has been reached. The end of an expression is denoted with a
+ *   semicolon. The end of all the expressions is denoted with a period. This means that
+ *   even if there is something present at the end of the file after a period, those
+ *   conents will simply be ignored.
  *
- * Preconditions:
+ * Preconditions: None.
  *
- * Postconditions:
+ * Postconditions: The infix string is modified such that it contains the contents of the
+ *   infix expression from the file. Once we get to a period, which denotes the end of
+ *   the infix expressions, the Boolean value "last" is set to true.
  *
  * *************************************************************************************/
 std::istream& operator>>(std::istream& is, expression& exp)
@@ -120,13 +129,15 @@ std::istream& operator>>(std::istream& is, expression& exp)
   return is;
 }
 
-/* Function:                          ***************************************************
+/* Function: std::ostream& operator<<(std::ostream&, const expression) ******************
  *
- * Description:
+ * Description: This function will display the infix and postfix string values.
  *
- * Preconditions:
+ * Preconditions: An object of the expression class is on the right hand side of the
+ *   extraction operator, thus directing the infix and postfix string values to an
+ *   output stream.
  *
- * Postconditions:
+ * Postconditions: Does not modify anything.
  *
  * *************************************************************************************/
 std::ostream& operator<<(std::ostream& os, const expression& exp)

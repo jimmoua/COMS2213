@@ -16,7 +16,7 @@
  *
  * Assumptions: None
  *
- * Special Processing Requirements: None
+ * Special Processing Requirements: Requires C++11.
  *
  * ************************************************************************/
 #include "expression.h"

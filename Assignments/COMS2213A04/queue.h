@@ -1,7 +1,6 @@
 #ifndef QUEUE_U
 #define QUEUE_U
 
-#include <cstddef>
 #include "QNodeType.h"
 #include "expression.h"
 #include <ostream>
@@ -32,6 +31,17 @@ class queue
     QNodeType<T>* back_;
 };
 
+/* Function: std::ostream& operator<<(std::ostream&, queue<T>) **************************
+ *
+ * Description: This function displays the contents of the queue by directing it to an
+ *   output stream.
+ *
+ * Preconditions: An object of the queue class is on the right hand side of the
+ *   extraction operator overload.
+ *
+ * Postconditions: This function does not modify anything.
+ *
+ * *************************************************************************************/
 template<class T>
 std::ostream& operator<<(std::ostream& os, queue<T>& obj)
 {
@@ -367,6 +377,8 @@ void queue<T>::pop()
     delete iter;
     this->count--;
   }
+  if(this->front_ == nullptr && this->back_ == nullptr)
+    this->front_ = this->back_ = nullptr;
 }
 
 /* Function: bool queue<T>::empty() const ***********************************************
