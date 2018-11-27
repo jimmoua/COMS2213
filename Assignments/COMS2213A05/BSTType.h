@@ -327,14 +327,14 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
    *
    * Then we can reroute some pointers
    * ---------------------------------
-   *            [10] 
-   *           /    \
-   *         [NP]  [10] ← Inserted here (for duplicate values insert right)
-   *               /  \
-   *             [NP][NP]
+   *     [10] 
+   *    /    \
+   *  [NP]  [10] ← Inserted here (for duplicate values insert right)
+   *        /  \
+   *      [NP][NP]
    *
-   * However, if we had a heavily populated list already, things would
-   * still be quite similar.
+   * However, if we had a heavily populated list already, things 
+   * would still be quite similar.
    *
    *   Value to insert: 28
    *
@@ -350,11 +350,11 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
    *        \      \       /  \
    *       [05]   [10]   [31][49]
    *
-   *   This means that the value 28 needs to be inserted to the left of
-   *   31. With some repoint the pointers. When traversing for insert,
-   *   we will eventally get to the point where we are at the node that
-   *   holds item 31. Once there, insert 28 to the left of 31 since 28
-   *   is less than 31.
+   *   This means that the value 28 needs to be inserted to the left 
+   *   of 31. With some repoint the pointers. When traversing for
+   *   insert, we will eventally get to the point where we are at the
+   *   node that holds item 31. Once there, insert 28 to the left of
+   *   31 since 28 is less than 31.
    *   
    *   CODE EXAMPLE FOR THIS
    *   ---------------------
@@ -365,11 +365,12 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
    *     else if(item < obj->item)
    *       insert(item, obj->left);
    *     else
-   *       // The only option left is nullptr, so allocate memory for it
+   *       // The only option left is nullptr
+   *       // So need to allocate memory for it
    *    
    *
    *                                    
-   *            [11]                             [11]                            
+   *            [11]                             [11]
    *            /  \                             /  \
    *           /    \                           /    \
    *          /      \                         /      \
@@ -383,52 +384,78 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& obj)
    *                  /                                /
    *                [NP]       Value inserted here → [28]
    *                 ↑        ----------------------------
-   *                 It gets here eventually, and when it does, we will
-   *                 allocate memory for it.
+   *                 It gets here eventually, and when it does, we
+   *                 will allocate memory for it.
    *
    *
-   * What if we had a duplicate item needed to be inserted, but it isn't
-   * the root node this time?
+   * What if we had a duplicate item needed to be inserted, but it
+   *  isn't the root node this time?
    *
    *    Item to insert: 43
    *
    *
-   *            [11]                             [11]                            
+   *            [11]                             [11]
    *            /  \                             /  \
    *           /    \                           /    \
    *          /      \                         /      \
    *         /        \                       /        \
-   *      [06]       [19]                  [06]       [19]
+   *      [06]       [19]      ------>     [06]       [19]
    *      /  \       /  \                  /  \       /  \
    *     /    \     /    \                /    \     /    \
-   *   [04]  [08] [17]  [43]            [04]  [08] [17]  [43] ←
+   *   [04]  [08] [17]  [43]            [04]  [08] [17]  [43]
    *     \      \       /  \              \      \       /  \
    *    [05]   [10]   [31][49]           [05]   [10]   [31][49]
+   * ----------------------------------------------------------------
    *
+   *            [11]                             [11]
+   *            /  \                             /  \
+   *           /    \                           /    \
+   *          /      \                         /      \
+   *         /        \                       /        \
+   *      [06]       [19]      ------>     [06]       [19]
+   *      /  \       /  \                  /  \       /  \
+   *     /    \     /    \                /    \     /    \
+   *   [04]  [08] [17]  [43]            [04]  [08] [17]  [43]
+   *     \      \       /  \              \      \       /  \
+   *    [05]   [10]   [31][49]           [05]   [10]   [31][49]
+   *                                                       /
+   *                                                     [43]
+   *                          The value is inserted here  ↑↑
+   *                            
    * */
   if(obj == nullptr)
   {
     std::cout << "Null pointer reached. Allocating memory for item "
       << item << std::endl;
-    // Create an iterator
-    obj = new BTNodeType<T>;
+    try
+    {
+      // Dynamically allocate
+      obj = new BTNodeType<T>;
 
-    // Iterator item is set to value of item to inserted.
-    obj->item = item;
+      // Iterator item is set to value of item to inserted.
+      obj->item = item;
 
-    count++;
+      // Increment count
+      count++;
+    }
+    catch(std::bad_alloc&)
+    {
+      // Do nothing, just catch.
+    }
   }
   else if(item <= obj->item)
   {
     std::cout << "Inserting: " << item << std::endl << "  " << item
-      << " is leq to " << obj->item << ". " << "Descending left...\n";
+      << " is leq to " << obj->item << ". " << "Descending left..."
+      << std::endl;
     insert(item, obj->left);
   }
   else if(item >= obj->item)
   {
     // insert right
     std::cout << "Inserting: " << item << std::endl << "  " << item
-      << " is geq to " << obj->item << ". " << "Descending right...\n";
+      << " is geq to " << obj->item << ". " << "Descending right..."
+      << std::endl;
     insert(item, obj->right);
   }
 }
@@ -575,51 +602,18 @@ void jimboDebug(BSTType<T>& obj)
   obj.insert(20);
   obj.insert(30);
   obj.insert(40);
-  obj.insert(10);
-  obj.insert(20);
-  obj.insert(30);
-  obj.insert(40);
   obj.insert(50);
   obj.insert(60);
   obj.insert(70);
   obj.insert(80);
   obj.insert(90);
   obj.insert(100);
-  obj.insert(50);
-  obj.insert(60);
-  obj.insert(70);
-  obj.insert(80);
-  obj.insert(90);
-  obj.insert(100);
-  obj.insert(10);
-  obj.insert(20);
-  obj.insert(30);
-  obj.insert(40);
-  obj.insert(50);
-  obj.insert(60);
-  obj.insert(70);
-  obj.insert(80);
-  obj.insert(90);
-  obj.insert(100);
-  obj.insert(10);
-  obj.insert(20);
-  obj.insert(30);
-  obj.insert(40);
-  obj.insert(50);
-  obj.insert(60);
-  obj.insert(70);
-  obj.insert(80);
-  obj.insert(90);
-  obj.insert(100);
-  obj.insert(10);
-  obj.insert(20);
-  obj.insert(30);
-  obj.insert(40);
-  obj.insert(50);
-  obj.insert(60);
-  obj.insert(70);
-  obj.insert(80);
-  obj.insert(90);
-  obj.insert(100);
+
+  /* Use the following for a way to check for leaks before the exit
+   * in the program so we can have better understanding of where the
+   * leak is. In this case, the single leak is due to a bad exit.
+   * Nothing is deallocated when dynamically allocated. */
+  std::string asdf;
+  std::getline(std::cin, asdf);
 }
 #endif
