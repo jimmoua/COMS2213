@@ -8,40 +8,37 @@
 template<class T>
 class stack
 {
-    public:
-        stack(size_t = 10);
-        stack(const stack<T>&);
-        ~stack();
-        const stack<T>& operator=(const stack<T>&);
-        void push(const T&);
-        bool empty() const;
-        const T& top() const;
-        size_t size() const;
-        void pop();
+  public:
+    stack(size_t = 10);
+    stack(const stack<T>&);
+    ~stack();
+    const stack<T>& operator=(const stack<T>&);
+    void push(const T&);
+    bool empty() const;
+    const T& top() const;
+    size_t size() const;
+    void pop();
 
-        // Remove later, needed for testing
-        template<class U>
-            friend std::ostream& operator<<(std::ostream&, stack<U>&);
+    // Remove later, needed for testing
+    template<class U>
+      friend std::ostream& operator<<(std::ostream&, stack<U>&);
 
-    private:
-        T* stack_;
-        size_t count;
-        size_t capacity;
-
+  private:
+    T* stack_;
+    size_t count;
+    size_t capacity;
 };
 
 template<class T>
 std::ostream& operator<<(std::ostream& os, stack<T>& obj)
 {
-    if(!obj.empty())
-    {
-        os << obj.stack_[0] << " ";
-        for(size_t i = 1; i < obj.count; i++)
-        {
-            os << ", " << obj.stack_[i];
-        }
-    }
-    return os;
+  if(!obj.empty())
+  {
+    os << obj.stack_[0] << " ";
+    for(size_t i = 1; i < obj.count; i++)
+      os << ", " << obj.stack_[i];
+  }
+  return os;
 }
 
 /* Function: stack<T>::stack(size_t) ****************************************************
@@ -59,9 +56,9 @@ std::ostream& operator<<(std::ostream& os, stack<T>& obj)
 template<class T>
 stack<T>::stack(size_t n)
 {
-    this->count = 0;
-    this->capacity = n;
-    this->stack_ = new T[capacity];
+  this->count = 0;
+  this->capacity = n;
+  this->stack_ = new T[capacity];
 }
 
 /* Function: void stack<T>::push(const T&) **********************************************
@@ -77,40 +74,39 @@ stack<T>::stack(size_t n)
 template<class T>
 void stack<T>::push(const T& item)
 {
-    bool inserted = false;
+  bool inserted = false;
 
-    /* If the list is full, try allocating new space for it by expanding it twice the
-     * amount */
-    if(this->count == this->capacity)
+  /* If the list is full, try allocating new space for it by expanding it twice the
+   * amount */
+  if(this->count == this->capacity)
+  {
+    try
     {
-        try
-        {
-            size_t newCapacity = 2*this->count;
-            T* temp = new T[newCapacity];
-            for(size_t i = 0; i < this->count; i++)
-            {
-                temp[i] = this->stack_[i];
-            }
-            delete [] this->stack_;
-            this->stack_ = temp;
-            inserted = true;
-        }
-        catch(std::bad_alloc &)
-        {
-            return;
-        }
-        if(inserted)
-            this->stack_[this->count++] = item;
+      size_t newCapacity = 2*this->count;
+      T* temp = new T[newCapacity];
+      for(size_t i = 0; i < this->count; i++)
+        temp[i] = this->stack_[i];
+      delete [] this->stack_;
+      this->stack_ = temp;
+      inserted = true;
     }
-    /* If the list isn't empty, simply add the item to the end of the list and increment
-     * the count of the list */
-    else
-        this->stack_[this->count++] = item;
+    catch(std::bad_alloc &)
+    {
+      return;
+    }
+    if(inserted)
+      this->stack_[this->count++] = item;
+  }
+  /* If the list isn't empty, simply add the item to the end of the list and increment
+   * the count of the list */
+  else
+    this->stack_[this->count++] = item;
 }
 
 /* Function: stack<T>::empty() const ****************************************************
  *
- * Description: Returns true if the stack is empty and false if the stack is not.
+ * Description: This is a one-liner function that returns true if the stack is empty and
+ *   false if the stack is not.
  *
  * Preconditions: None.
  *
@@ -118,10 +114,7 @@ void stack<T>::push(const T& item)
  *
  * *************************************************************************************/
 template<class T>
-bool stack<T>::empty() const
-{
-    return (this->count == 0);
-}
+bool stack<T>::empty() const { return (this->count == 0); }
 
 /* Function: const T& stack<T>::top() const *********************************************
  *
@@ -135,8 +128,8 @@ bool stack<T>::empty() const
 template<class T>
 const T& stack<T>::top() const
 {
-    if(!this->empty())
-        return this->stack_[this->count-1];
+  if(!this->empty())
+    return this->stack_[this->count-1];
 }
 
 /* Function: void stack<T>::pop() *******************************************************
@@ -151,8 +144,8 @@ const T& stack<T>::top() const
 template<class T>
 void stack<T>::pop()
 {
-    if(!this->empty())
-        this->count--;
+  if(!this->empty())
+    this->count--;
 }
 
 /* Function: stack<T>::~stack() *********************************************************
@@ -169,8 +162,8 @@ void stack<T>::pop()
 template<class T>
 stack<T>::~stack()
 {
-    if(!this->empty())
-        delete [] this->stack_;
+  if(!this->empty())
+    delete [] this->stack_;
 }
 
 /* Function: const stack<T>& stack<T>::operator=(const stack<T>&) ***********************
@@ -187,20 +180,18 @@ stack<T>::~stack()
 template<class T>
 const stack<T>& stack<T>::operator=(const stack<T> &src)
 {
-    /* If the stack isn't empty, we first delete it */
-    if(!this->empty())
-        delete [] this->stack_;
+  /* If the stack isn't empty, we first delete it */
+  if(!this->empty())
+    delete [] this->stack_;
 
-    /* Copy over the source capacity, source count, and source items via deep copy into
-     * "this" stack */
-    this->capacity = src.capacity;
-    this->count = src.count;
-    this->stack_ = new T[this->capacity];
-    for(size_t i = 0; i < src.count; i++)
-    {
-        this->stack_[i] = src.stack_[i];
-    }
-    return this;
+  /* Copy over the source capacity, source count, and source items via deep copy into
+   * "this" stack */
+  this->capacity = src.capacity;
+  this->count = src.count;
+  this->stack_ = new T[this->capacity];
+  for(size_t i = 0; i < src.count; i++)
+    this->stack_[i] = src.stack_[i];
+  return this;
 }
 
 /* Function: stack<T>::stack(const stack<T>&) *******************************************
@@ -216,21 +207,22 @@ const stack<T>& stack<T>::operator=(const stack<T> &src)
 template<class T>
 stack<T>::stack(const stack<T>&src)
 {
-    this->count = 0;
-    /* If we aren't copying from the same source, go ahead and perform the deep copy */
-    if(&src != this)
-    {
-        this->capacity = src.capacity;
-        this->count = src.count;
-        this->stack_ = new T[src.capacity];
-        for(size_t i = 0; i < src.count; i++)
-            this->stack_[i] = src.stack_[i];
-    }
+  this->count = 0;
+  /* If we aren't copying from the same source, go ahead and perform the deep copy */
+  if(&src != this)
+  {
+    this->capacity = src.capacity;
+    this->count = src.count;
+    this->stack_ = new T[src.capacity];
+    for(size_t i = 0; i < src.count; i++)
+      this->stack_[i] = src.stack_[i];
+  }
 }
 
 /* Function: size_t stack<T>::size() const **********************************************
  *
- * Description: Returns the count of how many items there are in the stack.
+ * Description: This is another one-liner function that returns the count of how many
+ *   items there are in the stack.
  *
  * Preconditions: None.
  *
@@ -238,9 +230,6 @@ stack<T>::stack(const stack<T>&src)
  *
  * *************************************************************************************/
 template<class T>
-size_t stack<T>::size() const
-{
-    return this->count;
-}
+size_t stack<T>::size() const { return this->count; }
 
 #endif

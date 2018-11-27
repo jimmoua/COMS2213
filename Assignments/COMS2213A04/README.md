@@ -24,6 +24,13 @@ Infix:   A*B.
 Postfix: AB*
 ```
 
+To use the program, the user will have to do something like this:
+```
+./a.out inputfile outputfile
+```
+
+where `inputfile` contains contains of the infix expression. `outputfile` is the file where the the postfix expression is going to be directed to.
+
 ## QNodeType header file
 This header file only contains a struct that will be used in the queue header file. It acts as a base to our linked list or queue. The struct is templated.
 

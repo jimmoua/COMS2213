@@ -4,8 +4,8 @@
 template<class T>
 struct QNodeType
 {
-    T item;
-    QNodeType<T>* next;
+  T item;
+  QNodeType<T>* next;
 };
 
 
