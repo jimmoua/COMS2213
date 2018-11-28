@@ -270,9 +270,16 @@ void BSTType<T>::insert(const T& item)
   if(root == nullptr)
   {
     std::cout << "Item " << item << " inserted at root\n";
-    root = new BTNodeType<T>;
-    root->item = item;
-    count++;
+    try
+    {
+      root = new BTNodeType<T>;
+      root->item = item;
+      count++;
+    }
+    catch(std::bad_alloc&)
+    {
+      // Do nothing, just catch
+    }
   }
   else if(item <= root->item)
   {
@@ -581,6 +588,46 @@ const T& BSTType<T>::predecessor(BTNodeType<T>* obj)
 template<class T> // private
 void BSTType<T>::preorder(std::ostream& os, BTNodeType<T>* obj) const
 {
+}
+
+/* ------------------------------------------------------------------
+ * Function:
+ *  void BSTType<T>::traverse(std::ostream&, TravType) const
+ *
+ * Description:
+ *   This function traverses the tree and outputs whatever is on the
+ *   tree depending on the traversal type.
+ *
+ * Preconditions:
+ *   An object of the BSTType class is the on the right hand side of
+ *   the extraction operator.
+ *
+ * Postconditions:
+ *   Does not modify anything.
+ * ----------------------------------------------------------------*/
+template<class T>
+void BSTType<T>::traverse(std::ostream& os, TravType) const
+{
+  /* In this function, we are going to traverse a tree and output the
+   * contents according the what the traverse type is. There are 3
+   * different traversal types that are going to be used for this
+   * function: Inorder, Preorder, and Postorder.
+   *
+   *               [11]
+   *               /  \
+   *              /    \
+   *             /      \
+   *            /        \
+   *         [06]       [19]
+   *         /  \       /  \
+   *        /    \     /    \
+   *      [04]  [08] [17]  [43]
+   *        \      \       /  \
+   *       [05]   [10]   [31][49]
+   *
+   * Inorder output:
+   *   
+   * */
 }
 
 /* ------------------------------------------------------------------
