@@ -2,6 +2,20 @@
 #define SORT_BUBBLE_SORT_H
 #include "UList.h"
 
+/* -------------------------------------------------------------------
+ * Function:
+ *   void sort(UList<T>&)
+ *
+ * Description:
+ *   Sorts an unordered list through bubble sort.
+ *
+ * Preconditions:
+ *   The argument is a class object from the UList class. The things
+ *   that are being sorted is the vector from the UList class.
+ *
+ * Postconditions:
+ *   Sorts the vector from values low to high.
+ * -----------------------------------------------------------------*/
 template<class T>
 void sort(UList<T>& list)
 {
