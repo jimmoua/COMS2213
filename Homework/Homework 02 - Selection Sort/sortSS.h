@@ -1,7 +1,7 @@
 #include "UList.h"
 
 /*==========================================================
- * Function: void sort(UList<T>:: &)
+ * Function: void sort(UList<T>&)
  *
  * Description: Sorts a vector using selection sort.
  *
