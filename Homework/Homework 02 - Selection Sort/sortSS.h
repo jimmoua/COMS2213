@@ -1,3 +1,6 @@
+#ifndef SORT_SS_H
+#define SORT_SS_H
+
 #include "UList.h"
 
 /*==========================================================
@@ -77,3 +80,5 @@ void sort(UList<T>& list)
     }
   }
 }
+
+#endif
