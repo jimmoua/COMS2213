@@ -125,11 +125,7 @@ const BSTType<T>& BSTType<T>::operator=(const BSTType<T>& src)
  * Postconditions:
  *   This will free/deallocate memory that was allocated on the heap.
  * --------------------------------------------------------------------------*/
-template<class T> // public
-BSTType<T>::~BSTType()
-{
-  destroy(root);
-}
+template<class T> BSTType<T>::~BSTType() { destroy(root); }
 
 /* ----------------------------------------------------------------------------
  * Function:
@@ -138,14 +134,13 @@ BSTType<T>::~BSTType()
  * Description:
  *   This function returns a bool value. The returned bool value is true if the
  *   tree is empty. If the returned bool value is false, there exists items in
- *   the tree.
+ *   the tree. This function is also a true one-liner function.
  *
  * Preconditions: None.
  *
  * Postconditions: None.
  * --------------------------------------------------------------------------*/
-template<class T> // public
-bool BSTType<T>::empty() const { return (this->count == 0); }
+template<class T> bool BSTType<T>::empty() const { return (this->count == 0); }
 
 /* ----------------------------------------------------------------------------
  * Function:
@@ -180,11 +175,8 @@ void BSTType<T>::erase(const T& item) { erase(item, root); }
  * Postconditions:
  *   Does not modify anything.
  * --------------------------------------------------------------------------*/
-template<class T> // public
-bool BSTType<T>::find(const T& item) const
-{
-  return find(item, root);
-}
+template<class T>
+bool BSTType<T>::find(const T& item) const { return find(item, root); }
 
 /* ----------------------------------------------------------------------------
  * Function:
@@ -435,8 +427,7 @@ void BSTType<T>::insert(const T& item, BTNodeType<T>*& node)
  *   Does not modify anything. Only returns the count of how many items there
  *   are in the tree.
  * --------------------------------------------------------------------------*/
-template<class T> // public
-size_t BSTType<T>::size() const { return this->count; }
+template<class T> size_t BSTType<T>::size() const { return this->count; }
 
 /* ----------------------------------------------------------------------------
  * Function:
@@ -459,7 +450,7 @@ size_t BSTType<T>::size() const { return this->count; }
  * Postconditions:
  *   The source tree items are deep copied into another tree.
  * --------------------------------------------------------------------------*/
-template<class T> // private
+template<class T>
 void BSTType<T>::copy(BTNodeType<T>*& node, BTNodeType<T>* nodeSource)
 {
   if(nodeSource != nullptr)
@@ -725,13 +716,13 @@ void BSTType<T>::erase(const T& item, BTNodeType<T>*& node)
  *   Does not modify anything.
  * --------------------------------------------------------------------------*/
 template<class T> // private
-void BSTType<T>::inorder(std::ostream& os, BTNodeType<T>* obj) const
+void BSTType<T>::inorder(std::ostream& os, BTNodeType<T>* node) const
 {
-  if(obj != nullptr)
+  if(node != nullptr)
   {
-    inorder(os, obj->left);
-    os << obj->item << " ";
-    inorder(os, obj->right);
+    inorder(os, node->left);
+    os << node->item << " ";
+    inorder(os, node->right);
   }
 }
 
@@ -765,13 +756,13 @@ void BSTType<T>::inorder(std::ostream& os, BTNodeType<T>* obj) const
  * Postconditions:
  * --------------------------------------------------------------------------*/
 template<class T> // private
-void BSTType<T>::postorder(std::ostream& os, BTNodeType<T>* obj) const
+void BSTType<T>::postorder(std::ostream& os, BTNodeType<T>* node) const
 {
-  if(obj != nullptr)
+  if(node != nullptr)
   {
-    postorder(os, obj->left);
-    postorder(os, obj->right);
-    os << obj->item << " ";
+    postorder(os, node->left);
+    postorder(os, node->right);
+    os << node->item << " ";
   }
 }
 
@@ -786,11 +777,11 @@ void BSTType<T>::postorder(std::ostream& os, BTNodeType<T>* obj) const
  * Postconditions:
  * --------------------------------------------------------------------------*/
 template<class T>
-const T& BSTType<T>::predecessor(BTNodeType<T>* obj)
+const T& BSTType<T>::predecessor(BTNodeType<T>* node)
 {
-  while(obj->right != nullptr)
-    obj = obj->right;
-  return obj->item;
+  while(node->right != nullptr)
+    node = node->right;
+  return node->item;
 }
 
 /* ----------------------------------------------------------------------------
@@ -826,13 +817,13 @@ const T& BSTType<T>::predecessor(BTNodeType<T>* obj)
  * Postconditions:
  * --------------------------------------------------------------------------*/
 template<class T>
-void BSTType<T>::preorder(std::ostream& os, BTNodeType<T>* obj) const
+void BSTType<T>::preorder(std::ostream& os, BTNodeType<T>* node) const
 {
-  if(obj!= nullptr)
+  if(node!= nullptr)
   {
-    os << obj->item << " ";
-    preorder(os, obj->left);
-    preorder(os, obj->right);
+    os << node->item << " ";
+    preorder(os, node->left);
+    preorder(os, node->right);
   }
 }
 
