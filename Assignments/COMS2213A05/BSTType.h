@@ -543,9 +543,7 @@ void BSTType<T>::erase(const T& item, BTNodeType<T>*& node)
          *           /  \
          *         [31][49]
          *  
-         *  We create an iterator so we can access the left branches later. The
-         *  reason why this is done is because after removing 19, the node
-         *  which contains 17 is going to be put into the place of 19.
+         *  -------------------------------------------------------------------
          *
          *           [11]
          *           /  \
