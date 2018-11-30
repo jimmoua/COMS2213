@@ -769,10 +769,15 @@ void BSTType<T>::postorder(std::ostream& os, BTNodeType<T>* node) const
  *   const T& BSTType<T>::predecessor(BTNodeType<T>*)
  *
  * Description:
+ *   This function will get the furthest right node from the left branch.
  *
  * Preconditions:
+ *   The erase function is invoked and a node that is going to be erased
+ *   already has two children. This function will swap that node and the
+ *   rightmost node value with that node that is going to be "erased".
  *
  * Postconditions:
+ *   Returns the rightmost node of a left branch.
  * --------------------------------------------------------------------------*/
 template<class T>
 const T& BSTType<T>::predecessor(BTNodeType<T>* node)
