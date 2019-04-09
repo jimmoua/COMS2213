@@ -1,13 +1,28 @@
-all: yes
+CC=cc
 
-yes: Program05.o
-	g++ Program05.o -std=c++11 -Wall
+SRC_DIR=./
 
-Program05.o:
-	g++ -c Program05.cpp -std=c++11 -Wall
+SRC_EXT=cpp
 
-rm:
-	rm -v *.out *.o
+INCLUDE_DIR=./
 
-rmvg:
-	rm -v vgcore*
+OBJ_DIR=./
+
+CFLAGS=-lstdc++ -std=c++11
+
+WFLAGS=-Wall -Wextra
+
+EXE=Program05
+
+SOURCES := $(wildcard $(SRC_DIR)/*.$(SRC_EXT))
+OBJECTS := $(SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
+
+all: $(OBJECTS)
+	$(CC) $(OBJECTS) $(CFLAGS) -o $(EXE)
+
+$(OBJECTS): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(WFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+clean:
+	rm $(OBJECTS) $(EXE) -v
